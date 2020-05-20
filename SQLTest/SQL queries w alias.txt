@@ -1,0 +1,36 @@
+SELECT sp.name
+FROM orders ord
+         LEFT JOIN salesperson sp
+                   ON ord.salesperson_id = sp.id
+         RIGHT JOIN customer ON ord.cust_id = customer.id
+WHERE customer.name = 'Seamens'
+GROUP BY sp.name;
+
+
+
+SELECT sp.name
+FROM salesperson sp
+WHERE sp.id NOT IN (
+    SELECT salesperson.id
+    FROM orders ord
+             LEFT JOIN salesperson ON ord.salesperson_id = salesperson.id
+             RIGHT JOIN customer ON ord.cust_id = customer.id
+    WHERE customer.name = 'Seamens'
+);
+
+
+
+SELECT name
+FROM orders ord
+         LEFT JOIN salesperson ON ord.salesperson_id = salesperson.id
+GROUP BY salesperson_id
+HAVING COUNT(number) >= 2;
+
+
+
+INSERT INTO topsales
+SELECT sp.name, sp.age
+FROM salesperson sp
+WHERE sp.salary > 100000
+ON DUPLICATE KEY UPDATE name = sp.name,
+                        age  = sp.age;
